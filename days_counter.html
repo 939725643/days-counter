@@ -3,50 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我們在一起的天數</title>
+    <title>我们在一起的天数</title>
     <style>
         body {
-    font-family: "Comic Sans MS", Arial, sans-serif;
-    text-align: center;
-    background-color: transparent; /* 讓整個背景透明！ */
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-        
-        .container {
-            background: #FFF8DC; /* 淺黃色卡片 */
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-family: "Microsoft YaHei", Arial, sans-serif;
             text-align: center;
-            width: 300px;
+            background-color: transparent;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(240, 240, 240, 0.85); /* 柔和淡灰色 */
+            padding: 15px 20px;
+            border-radius: 12px;
+            width: auto;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* 柔和阴影 */
         }
         h2 {
-            color: #FF914D;
-            margin: 10px 0;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
         }
-        #daysTogether {
-            font-size: 28px;
+        .counter-container {
+            font-size: 22px;
             font-weight: bold;
             color: #333;
-            margin: 10px 0;
+        }
+        .unit {
+            font-size: 18px;
+            color: #666;
+            margin-left: 4px;
+        }
+        .heart {
+            color: #FFC107; /* 黄色爱心 */
+            font-size: 18px;
+            margin-left: 5px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>我們重逢至今</h2>
-        <p id="daysTogether">計算中...</p>
-        <h2>天 💖</h2>
+        <h2>我们重逢至今</h2>
+        <p class="counter-container">一共 <span id="daysTogether"></span><span class="unit"> 天</span><span class="heart">💛</span></p>
     </div>
 
     <script>
         function calculateDays() {
-            var startDate = new Date("2020-07-30"); // 你們重逢的日期
+            var startDate = new Date("2020-07-30"); // 你们重逢的日期
             var today = new Date();
             var timeDiff = today - startDate;
             var daysTogether = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
