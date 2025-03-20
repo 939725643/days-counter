@@ -20,7 +20,7 @@
             padding: 15px 20px;
             border-radius: 12px;
             width: auto;
-            font-size: 14px;
+            font-size: 16px;
             text-align: center;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* 柔和阴影 */
         }
@@ -29,15 +29,14 @@
             color: #666;
             margin-bottom: 8px;
         }
-        .counter-container {
+        .text {
+            font-size: 16px;
+            color: #666;
+        }
+        .counter {
             font-size: 22px;
             font-weight: bold;
             color: #333;
-        }
-        .unit {
-            font-size: 18px;
-            color: #666;
-            margin-left: 4px;
         }
         .heart {
             color: #FFC107; /* 黄色爱心 */
@@ -50,7 +49,7 @@
 
     <div class="container">
         <h2>我们重逢至今</h2>
-        <p class="counter-container">一共 <span id="daysTogether"></span><span class="unit"> 天</span><span class="heart">💛</span></p>
+        <p class="container">一共 <span id="daysTogether" class="counter"></span> 天 <span class="heart">💛</span></p>
     </div>
 
     <script>
