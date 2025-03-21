@@ -1,157 +1,201 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>夏彦的实时身体数据</title>
-    <style>
-        body {
-            font-family: "Microsoft YaHei", Arial, sans-serif;
-            text-align: center;
-            background-color: transparent;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background: rgba(17,17,17,0.85);
-            padding: 40px 50px;
-            border-radius: 16px;
-            min-width: 150px;
-            max-width: 200px;
-            font-size: 18px;
-            text-align: center;
-            font-weight: bold;
-            box-shadow: 0px 6px 16px rgba(255, 255, 255, 0.1);
-            color: #fff;
-            position: relative;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* 柔和阴影 */
-        }
-        h2 {
-            font-size: 18px;
-            color: #FFD700;
-            margin-bottom: 20px;
-        }
-        .data {
-            font-size: 15px;
-            color: #fff;
-            margin: 10px 0;
-        }
-        .heart {
-            color: #FFC107;
-            font-size: 15px;
-        }
-        .status {
-            font-size: 16px;
-            color: #ccc;
-            margin-top: 15px;
-        }
-        .btn-thought {
-            margin-top: 20px;
-            padding: 8px 16px;
-            background-color: #222;
-            color: #fff;
-            border: 1px solid #555;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .popup {
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
-            font-weight: normal;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-        .popup.show {
-            opacity: 1;
-        }
-
-        /* 心跳動畫 */
-        .heartbeat {
-            animation: pulse 0.8s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>夏彦的实时身体数据</title>
+  <style>
+    :root {
+      --bg-blur: rgba(0, 0, 0, 0.6);
+      --border: rgba(255, 255, 255, 0.2);
+      --text-main: #ffffff;
+      --text-sub: #cccccc;
+      --highlight: #ffc107;
+      --accent: #ffd700;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      height: 100vh;
+      width: 100vw;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      position: relative;
+    }
+    .container {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      backdrop-filter: blur(10px);
+      background: var(--bg-blur);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px 28px;
+      color: var(--text-main);
+      font-weight: 500;
+      resize: both;
+      overflow: hidden; /* 隱藏滾動條 */
+      min-width: 260px;
+      max-width: 90vw;
+      min-height: 280px;
+      max-height: 90vh;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+    }
+    .content {
+      text-align: left;
+      width: 100%; /* 保證內容不超出邊界 */
+    }
+    .data {
+      font-size: 14px;
+      margin: 12px 0;
+    }
+    .data .label {
+      font-size: 14px;
+      color: var(--text-sub);
+      margin-right: 8px;
+    }
+    .data .value {
+      font-weight: bold;
+      font-size: 26px;
+      vertical-align: middle;
+    }
+    .data .icon {
+      font-size: 28px;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    .status {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+    .btn-thought {
+      margin-top: 20px;
+      padding: 8px 16px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s ease;
+    }
+    .btn-thought:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .popup {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      font-weight: normal;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 99;
+    }
+    .popup.show {
+      opacity: 1;
+    }
+    .heartbeat {
+      animation: pulse 0.8s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="content">
+      <div class="data">
+        <span class="icon">❤️</span>
+        <span class="label">心率：</span>
+        <span id="heartRate" class="value">79</span> bpm
+      </div>
 
-    <div class="container">
-        <h2>夏彦的实时身体数据</h2>
-        <p class="data">❤️ 心率：<span id="heartRate" class="counter">79</span> bpm</p>
-        <p class="data">🌡 体温：<span id="temperature">36.5</span>°C</p>
-        <p class="data">💨 呼吸频率：<span id="breathRate">16</span> 次/分</p>
-        <p class="data">⚡ 压力指数：<span id="stressLevel">35</span>%</p>
-        <p class="status">当前状态：<span id="statusText">静坐</span></p>
-        <button class="btn-thought" onclick="showThought()">他在想什么</button>
-        <div class="popup" id="thoughtPopup">……</div>
+      <div class="data">
+        <span class="icon">🌡</span>
+        <span class="label">体温：</span>
+        <span id="temperature" class="value">36.5</span>°C
+      </div>
+
+      <div class="data">
+        <span class="icon">🩸</span>
+        <span class="label">血氧：</span>
+        <span id="spo2" class="value">98</span>%
+      </div>
+
+      <div class="data">
+        <span class="icon">⚡</span>
+        <span class="label">压力：</span>
+        <span id="stressLevel" class="value">35</span>%
+      </div>
+
+      <div class="status">当前状态：<span id="statusText">静坐</span></div>
+      <button class="btn-thought" onclick="showThought()">他在想什么</button>
+      <div class="popup" id="thoughtPopup">……</div>
     </div>
+  </div>
 
-    <script>
-        function updateData() {
-            const statusOptions = ["静坐", "站立", "运动中", "思考中", "发呆中", "想你💗"];
-            const statusText = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+  <script>
+    function updateData() {
+      const statusOptions = ["静坐", "站立", "运动中", "思考中", "发呆中", "想你💗"];
+      const statusText = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+      const heartElem = document.getElementById("heartRate");
+      const heartRate = statusText === "想你💗" ? 88 + Math.floor(Math.random() * 6) : 78 + Math.floor(Math.random() * 5);
+      const temperature = (36.3 + Math.random() * 0.4).toFixed(1);
+      const spo2 = 96 + Math.floor(Math.random() * 3);
+      const stressLevel = 30 + Math.floor(Math.random() * 10);
 
-            const heartElem = document.getElementById("heartRate");
-            const heartRate = statusText === "想你💗"
-                ? 88 + Math.floor(Math.random() * 6)
-                : 78 + Math.floor(Math.random() * 5);
+      heartElem.innerText = heartRate;
+      document.getElementById("temperature").innerText = temperature;
+      document.getElementById("spo2").innerText = spo2;
+      document.getElementById("stressLevel").innerText = stressLevel;
+      document.getElementById("statusText").innerText = statusText;
 
-            const temperature = (36.3 + Math.random() * 0.4).toFixed(1);
-            const breathRate = 15 + Math.floor(Math.random() * 3);
-            const stressLevel = 30 + Math.floor(Math.random() * 10);
+      if (statusText === "想你💗") {
+        heartElem.classList.add("heartbeat");
+      } else {
+        heartElem.classList.remove("heartbeat");
+      }
+    }
 
-            document.getElementById("heartRate").innerText = heartRate;
-            document.getElementById("temperature").innerText = temperature;
-            document.getElementById("breathRate").innerText = breathRate;
-            document.getElementById("stressLevel").innerText = stressLevel;
-            document.getElementById("statusText").innerText = statusText;
+    function showThought() {
+      const thoughts = [
+        "不知道你现在在做什么……",
+        "这边有点安静了。",
+        "你会突然想到我吗？",
+        "没什么特别的事，只是想你了。",
+        "有些跳动，不太规律。",
+        "嗯……刚刚是不是听到你名字了？"
+      ];
+      const popup = document.getElementById("thoughtPopup");
+      popup.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
+      popup.classList.add("show");
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 3000);
+    }
 
-            // 控制心跳動畫
-            if (statusText === "想你💗") {
-                heartElem.classList.add("heartbeat");
-            } else {
-                heartElem.classList.remove("heartbeat");
-            }
-        }
-
-        function showThought() {
-            const thoughts = [
-                "不知道你现在在做什么……",
-                "这边有点安静了。",
-                "你会突然想到我吗？",
-                "没什么特别的事，只是想你了。",
-                "有些跳动，不太规律。",
-                "嗯……刚刚是不是听到你名字了？"
-            ];
-            const popup = document.getElementById("thoughtPopup");
-            const random = Math.floor(Math.random() * thoughts.length);
-            popup.textContent = thoughts[random];
-            popup.classList.add("show");
-
-            setTimeout(() => {
-                popup.classList.remove("show");
-            }, 3000);
-        }
-
-        setInterval(updateData, 5000);
-    </script>
-
+    setInterval(updateData, 5000);
+  </script>
 </body>
 </html>
-
