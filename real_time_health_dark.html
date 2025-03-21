@@ -39,7 +39,7 @@
       color: var(--text-main);
       font-weight: 500;
       resize: both;
-      overflow: hidden; /* 隱藏滾動條 */
+      overflow: hidden;
       min-width: 260px;
       max-width: 90vw;
       min-height: 280px;
@@ -133,7 +133,7 @@
 
       <div class="data">
         <span class="icon">&nbsp;🌡</span>
-      <span class="label">&nbsp;体温：</span>
+        <span class="label">&nbsp;体温：</span>
         <span id="temperature" class="value">36.5</span>°C
       </div>
 
@@ -149,7 +149,7 @@
         <span id="stressLevel" class="value">35</span>%
       </div>
       <div class="status">&nbsp;</div>
-      <div class="status">&nbsp;夏彦当前状态：<span id="statusText">静坐</span></div>
+      <div class="status">夏彦当前状态：<span id="statusText">静坐</span></div>
       <button class="btn-thought" onclick="showThought()">他在想什么</button>
       <div class="popup" id="thoughtPopup">……</div>
     </div>
@@ -157,10 +157,8 @@
 
   <script>
     function updateData() {
-      const statusOptions = ["静坐", "站立", "运动中", "思考中", "发呆中", "想你💗"];
-      const statusText = statusOptions[Math.floor(Math.random() * statusOptions.length)];
       const heartElem = document.getElementById("heartRate");
-      const heartRate = statusText === "想你💗" ? 88 + Math.floor(Math.random() * 6) : 78 + Math.floor(Math.random() * 5);
+      const heartRate = 78 + Math.floor(Math.random() * 5);
       const temperature = (36.3 + Math.random() * 0.4).toFixed(1);
       const spo2 = 96 + Math.floor(Math.random() * 3);
       const stressLevel = 30 + Math.floor(Math.random() * 10);
@@ -169,13 +167,12 @@
       document.getElementById("temperature").innerText = temperature;
       document.getElementById("spo2").innerText = spo2;
       document.getElementById("stressLevel").innerText = stressLevel;
-      document.getElementById("statusText").innerText = statusText;
+    }
 
-      if (statusText === "想你💗") {
-        heartElem.classList.add("heartbeat");
-      } else {
-        heartElem.classList.remove("heartbeat");
-      }
+    function updateStatus() {
+      const statusOptions = ["静坐", "站立", "运动中", "思考中", "睡眠", "想你💗"];
+      const statusText = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+      document.getElementById("statusText").innerText = statusText;
     }
 
     function showThought() {
@@ -195,7 +192,8 @@
       }, 3000);
     }
 
-    setInterval(updateData, 5000);
+    setInterval(updateData, 5000); // 數據每 5 秒更新
+    setInterval(updateStatus, 300000); // 狀態每 5 分鐘更新（300000 毫秒）
   </script>
 </body>
 </html>
