@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>夏彦的实时身体数据</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            text-align: center;
+            background-color: transparent;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(240, 240, 240, 1); /* 更实心的浅灰色背景 */
+            padding: 20px 25px;
+            border-radius: 12px;
+            width: auto;
+            font-size: 18px;
+            text-align: center;
+            font-weight: bold; /* 让所有文字加粗 */
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* 柔和阴影 */
+        }
+        h2 {
+            font-size: 20px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+        .data {
+            font-size: 18px;
+            color: #222;
+            margin: 5px 0;
+        }
+        .heart {
+            color: #FF5722; /* 橙色心率 */
+            font-size: 18px;
+        }
+        .status {
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>夏彦的实时身体数据</h2>
+        <p class="data">❤️ 心率：<span id="heartRate">79</span> bpm</p>
+        <p class="data">🌡 体温：<span id="temperature">36.5</span>°C</p>
+        <p class="data">💨 呼吸频率：<span id="breathRate">16</span> 次/分</p>
+        <p class="data">⚡ 压力指数：<span id="stressLevel">35</span>%</p>
+        <p class="status">当当前状态：<span id="statusText">静坐</span></p>
+    </div>
+
+    <script>
+        function updateData() {
+            // 隨機變動數據
+            let heartRate = 78 + Math.floor(Math.random() * 5); // 心率 78~82
+            let temperature = (36.3 + Math.random() * 0.4).toFixed(1); // 体温 36.3~36.7
+            let breathRate = 15 + Math.floor(Math.random() * 3); // 呼吸頻率 15~17
+            let stressLevel = 30 + Math.floor(Math.random() * 10); // 壓力值 30~40
+
+            // 活動狀態變化
+            let statusOptions = ["静坐", "站立", "运动中", "思考中", "发呆中"];
+            let statusText = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+
+            // 更新 HTML
+            document.getElementById("heartRate").innerText = heartRate;
+            document.getElementById("temperature").innerText = temperature;
+            document.getElementById("breathRate").innerText = breathRate;
+            document.getElementById("stressLevel").innerText = stressLevel;
+            document.getElementById("statusText").innerText = statusText;
+        }
+
+        // 每 5 秒更新一次數據
+        setInterval(updateData, 5000);
+    </script>
+
+</body>
+</html>
