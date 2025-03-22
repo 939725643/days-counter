@@ -35,12 +35,12 @@
       background: var(--bg-blur);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 20px 28px;
+      padding: 16px 20px;
       color: var(--text-main);
       font-weight: 500;
       resize: both;
       overflow: hidden;
-      min-width: 260px;
+      min-width: 230px;
       max-width: 90vw;
       min-height: 280px;
       max-height: 90vh;
@@ -54,42 +54,53 @@
       width: 100%;
     }
     .data {
-      font-size: 14px;
-      margin: 12px 0;
+      font-size: 12px;
+      margin: 8px 0;
     }
     .data .label {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-sub);
-      margin-right: 8px;
+      margin-right: 6px;
     }
     .data .value {
       font-weight: bold;
-      font-size: 26px;
+      font-size: 20px;
       vertical-align: middle;
     }
     .data .icon {
-      font-size: 28px;
+      font-size: 22px;
       vertical-align: middle;
-      margin-right: 8px;
+      margin-right: 6px;
     }
     .status {
-      margin-top: 14px;
-      font-size: 13px;
+      margin-top: 10px;
+      font-size: 12px;
       color: var(--text-sub);
     }
     .btn-thought {
-      margin-top: 20px;
-      padding: 8px 16px;
+      margin-top: 16px;
+      padding: 6px 12px;
       background-color: rgba(255, 255, 255, 0.1);
       color: #fff;
       border: 1px solid var(--border);
       border-radius: 10px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 12px;
       transition: background 0.3s ease;
     }
     .btn-thought:hover {
       background-color: rgba(255, 255, 255, 0.2);
+    }
+    .thought-icon {
+      margin-left: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      vertical-align: middle;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+    }
+    .thought-icon:hover {
+      opacity: 1;
     }
     .popup {
       position: absolute;
@@ -149,51 +160,167 @@
         <span id="stressLevel" class="value">35</span>%
       </div>
       <div class="status">&nbsp;</div>
-      <div class="status">&nbsp;夏彦当前状态：<span id="statusText">静坐</span></div>
-      <button class="btn-thought" onclick="showThought()">他在想什么</button>
+<div class="status" id="healthTip">健康状况：健康</div>
+      <div class="status">夏彦当前状态：<span id="statusText">静坐</span><span class="thought-icon" onclick="showThought()">💭</span></div>
+      
       <div class="popup" id="thoughtPopup">……</div>
     </div>
   </div>
 
-  <script>
-    function updateData() {
-      const heartElem = document.getElementById("heartRate");
-      const heartRate = 78 + Math.floor(Math.random() * 5);
-      const temperature = (36.3 + Math.random() * 0.4).toFixed(1);
-      const spo2 = 96 + Math.floor(Math.random() * 3);
-      const stressLevel = 30 + Math.floor(Math.random() * 10);
+  
 
-      heartElem.innerText = heartRate;
-      document.getElementById("temperature").innerText = temperature;
-      document.getElementById("spo2").innerText = spo2;
-      document.getElementById("stressLevel").innerText = stressLevel;
+<script>
+  const popup = document.getElementById("thoughtPopup");
+
+  // 心率點擊計數
+  let heartClickCount = 0;
+  let heartClickTimer = null;
+
+  const heartResponses = {
+    single: [
+      "别一直盯着心跳看，会害羞的。",
+      "诶？你在看哪里……",
+      "每次你靠近，我都跳得有点快。"
+    ],
+    triple: [
+      "……你、你到底想看多久……",
+      "别一直戳啦，我会控制不住乱跳的……",
+      "真的没什么特别的，你别戳了……",
+      "……我会以为你在…故意的。",
+      "就算你再点，我也不会说我脸红了。"
+    ]
+  };
+
+  const pressureResponses = [
+    "有你在就不累了。",
+    "其实还好，只是有点想你。",
+    "你比任何安慰都有效。"
+  ];
+
+  const statusResponses = [
+    "其实不是静坐，是在偷偷想你。",
+    "你居然点我……所以你也在想我？",
+    "我刚刚…真的在发呆。"
+  ];
+
+  function showPopup(text) {
+    popup.textContent = text;
+    popup.classList.add("show");
+    setTimeout(() => {
+      popup.classList.remove("show");
+    }, 3000);
+  }
+
+  // 心率點擊邏輯
+  document.querySelectorAll(".icon").forEach((el) => {
+    if (el.textContent.includes("❤️")) {
+      el.addEventListener("click", () => {
+        heartClickCount++;
+        clearTimeout(heartClickTimer);
+        heartClickTimer = setTimeout(() => {
+          if (heartClickCount >= 3) {
+            showPopup(heartResponses.triple[Math.floor(Math.random() * heartResponses.triple.length)]);
+          } else {
+            showPopup(heartResponses.single[Math.floor(Math.random() * heartResponses.single.length)]);
+          }
+          heartClickCount = 0;
+        }, 400);
+      });
     }
 
-    function updateStatus() {
-      const statusOptions = ["静坐", "站立", "运动中", "思考中", "睡眠", "想你💗"];
-      const statusText = statusOptions[Math.floor(Math.random() * statusOptions.length)];
-      document.getElementById("statusText").innerText = statusText;
+    // 壓力點擊
+    if (el.textContent.includes("⚡")) {
+      el.addEventListener("click", () => {
+        showPopup(pressureResponses[Math.floor(Math.random() * pressureResponses.length)]);
+      });
     }
 
-    function showThought() {
-      const thoughts = [
-        "不知道你现在在做什么……",
-        "这边有点安静了。",
-        "你会突然想到我吗？",
-        "没什么特别的事，只是想你了。",
-        "有些跳动，不太规律。",
-        "嗯……刚刚是不是听到你名字了？"
-      ];
-      const popup = document.getElementById("thoughtPopup");
-      popup.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
-      popup.classList.add("show");
-      setTimeout(() => {
-        popup.classList.remove("show");
-      }, 3000);
+    // 體溫點擊
+    if (el.textContent.includes("🌡")) {
+      el.addEventListener("click", () => {
+        const temp = parseFloat(document.getElementById("temperature").textContent);
+        const responses = temp >= 37 ? [
+          "……好像，有点热……",
+          "不严重，真的，不要太担心……",
+          "我能忍，你不用总是担心我……",
+          "要是你在就好了，我可能就不会难受了。",
+          "我会好起来的，你别露出那种表情……"
+        ] : [
+          "嗯？我没事呀，不用太担心。",
+          "我很好，比你担心的还好一点。",
+          "其实……你一关心我，我就真的感觉好起来了。",
+          "你在身边的话，我肯定不会发烧。"
+        ];
+        showPopup(responses[Math.floor(Math.random() * responses.length)]);
+      });
     }
+  });
 
-    setInterval(updateData, 5000); // 數據每 5 秒更新
-    setInterval(updateStatus, 300000); // 狀態每 5 分鐘更新（300000 毫秒）
-  </script>
+  // 狀態點擊
+  document.getElementById("statusText").addEventListener("click", () => {
+    showPopup(statusResponses[Math.floor(Math.random() * statusResponses.length)]);
+  });
+
+  // 他在想什么按钮
+  function showThought() {
+    const thoughts = [
+      "不知道你现在在做什么……",
+      "刚才那一下，我好像真的有点心动了。",
+      "没你的时候，我总是会习惯性回头。",
+      "今天也想你了。",
+      "其实……我也想撒娇来着。",
+    ];
+    showPopup(thoughts[Math.floor(Math.random() * thoughts.length)]);
+  }
+
+  // 健康狀態判斷
+  function updateHealthTip(heartRate, temperature, stress) {
+    const tip = document.getElementById("healthTip");
+    let message = "健康";
+    if (temperature >= 37) message = "体温偏高";
+    else if (heartRate > 95) message = "心率偏高";
+    else if (stress > 70) message = "压力偏高";
+    tip.innerText = "健康状况：" + message;
+  }
+
+  // 狀態更新邏輯（含睡眠）
+  function updateStatus() {
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const isSleepTime = (hour >= 23 || hour < 5 || (hour === 5 && minute <= 30));
+    const statusOptions = ["静坐", "发呆", "想你💗", "任务中", "整理资料"];
+    let statusText;
+    if (isSleepTime && Math.random() < 0.8) {
+      statusText = "睡眠";
+    } else {
+      statusText = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+    }
+    document.getElementById("statusText").innerText = statusText;
+  }
+
+  // 數據更新與狀態同步
+  function updateData() {
+    const heartRate = 78 + Math.floor(Math.random() * 5);
+    const temperature = (36.3 + Math.random() * 0.9).toFixed(1);
+    const spo2 = 96 + Math.floor(Math.random() * 3);
+    const stressLevel = 30 + Math.floor(Math.random() * 50);
+
+    document.getElementById("heartRate").innerText = heartRate;
+    document.getElementById("temperature").innerText = temperature;
+    document.getElementById("spo2").innerText = spo2;
+    document.getElementById("stressLevel").innerText = stressLevel;
+
+    updateHealthTip(heartRate, temperature, stressLevel);
+  }
+
+  setInterval(updateData, 5000);
+  setInterval(updateStatus, 300000);
+  updateData();
+  updateStatus();
+</script>
 </body>
+
+
+
 </html>
