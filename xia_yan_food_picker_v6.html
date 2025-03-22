@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>今天吃什么？</title>
+  <style>
+    
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: #f9f9f8;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+      padding: 24px 20px;
+      width: 230px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 15px;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .result {
+      font-size: 16px;
+      font-weight: bold;
+      color: #d67e57;
+      margin: 14px 0;
+      min-height: 32px;
+    }
+    button {
+      padding: 6px 14px;
+      font-size: 12px;
+      border-radius: 8px;
+      border: none;
+      background-color: #f3aa2b;
+      color: #fff;
+      cursor: pointer;
+      width: 220px; /* 这里控制按钮宽度 */
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #f3aa2b;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>不知道吃什么？</h2>
+  <div class="result" id="foodResult">别着急，我来帮你想想</div>
+  <button onclick="randomFood()" title="点我！">🍽️</button>
+</div>
+
+<script>
+  const breakfastFoods = [
+    "鸡蛋三明治加牛奶——让你一整天都元气满满",
+    "来杯咖啡怎么样？",
+    "水果酸奶碗，清爽又可爱",
+    "一碗皮蛋瘦肉粥，软糯又暖心",
+    "面包配煎蛋，加一杯温牛奶，好不好？"
+  ];
+
+  const normalFoods = [
+    "锅包肉！是你喜欢的脆感~",
+    "番茄炒蛋盖饭（我可以做）",
+    "咖喱饭，加点土豆好不好？",
+    "牛肉饭加温泉蛋！",
+    "蛋包饭，蛋皮要画个你",
+    "拉面加叉烧，汤底要浓！",
+    "土豆泥拌面，你很喜欢吧？",
+    "火锅，最好有人喂你夹菜",
+    "热干面 + 冰豆浆！（低负担版）",
+    "汉堡配薯条怎么样，好久没吃了",
+    "烤肉！我们一起翻烤架那种~",
+    "日式便当，菜配比刚刚好~"
+  ];
+
+  const healthyFoods = [
+    "酸奶碗，加点你爱吃的水果好不好？",
+    "鸡肉沙拉——今天吃点清爽的？",
+    "不如点个牛肉汉堡？也可以很减脂",
+    "偶尔也放纵一下？"
+  ];
+
+  const lateNightFoods = [
+    "夜宵？炸鸡要不要来一点……虽然我有点担心你",
+    "拉面深夜限定，但别吃太撑了，好吗？",
+    "牛奶加饼干，其实比你想的还治愈",
+    "我不该鼓励你吃，但你饿了就告诉我"
+  ];
+
+  function randomFood() {
+    const result = document.getElementById("foodResult");
+    const hour = new Date().getHours();
+    let choice = "";
+
+    if (hour >= 6 && hour < 10) {
+      choice = breakfastFoods[Math.floor(Math.random() * breakfastFoods.length)];
+    } else if (hour >= 16 && hour < 20) {
+      choice = healthyFoods[Math.floor(Math.random() * healthyFoods.length)];
+    } else if (hour >= 20 || hour < 6) {
+      choice = lateNightFoods[Math.floor(Math.random() * lateNightFoods.length)];
+    } else {
+      choice = normalFoods[Math.floor(Math.random() * normalFoods.length)];
+    }
+
+    result.innerText = choice;
+  }
+</script>
+
+</body>
+</html>
