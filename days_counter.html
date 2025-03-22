@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我们在一起的天数</title>
+    <title>我們在一起的天數</title>
     <style>
         body {
-            font-family: "Microsoft YaHei", Arial, sans-serif;
+            font-family: "Comic Sans MS", Arial, sans-serif;
             text-align: center;
-            background-color: transparent;
+            background-color: #f9f9f9;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -16,33 +16,22 @@
             height: 100vh;
         }
         .container {
-            background: rgba(230, 230, 230, 1); /* 更实心的浅灰色背景 */
-            padding: 20px 55px;
-            border-radius: 12px;
-            width: auto;
-            font-size: 18px;
+            background: #f1f1f1; /* 淺黃色卡片 */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
-            font-weight: bold; /* 让所有文字加粗 */
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* 柔和阴影 */
+            width: 230px;
         }
         h2 {
-            font-size: 18px;
-            color: #444;
-            margin-bottom: 8px;
+            color: #FF914D;
+            margin: 10px 0;
         }
-        .text {
-            font-size: 18px;
-            color: #444;
-        }
-        .counter {
-            font-size: 24px; /* 让数字稍微大一点 */
+        #daysTogether {
+            font-size: 28px;
             font-weight: bold;
-            color: #222;
-        }
-        .heart {
-            color: #FFC107; /* 黄色爱心 */
-            font-size: 18px;
-            margin-left: 5px;
+            color: #333;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -50,12 +39,14 @@
 
     <div class="container">
         <h2>我们重逢至今</h2>
+
         <p class="text">一共 <span id="daysTogether" class="counter"></span> 天 <span class="heart">💛</span></p>
+        <p id="currentDate" style="font-size: 14px; color: #666; margin-top: 8px;"></p>
     </div>
 
     <script>
         function calculateDays() {
-            var startDate = new Date("2020-07-30"); // 你们重逢的日期
+            var startDate = new Date("2020-07-30"); // 你們重逢的日期
             var today = new Date();
             var timeDiff = today - startDate;
             var daysTogether = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
@@ -63,6 +54,14 @@
         }
 
         calculateDays();
+        
+        // 顯示當前日期
+        var dateElem = document.getElementById("currentDate");
+        var today = new Date();
+        var y = today.getFullYear();
+        var m = ("0" + (today.getMonth() + 1)).slice(-2);
+        var d = ("0" + today.getDate()).slice(-2);
+        dateElem.innerText = "今天是：" + y + "年" + m + "月" + d + "日";
     </script>
 
 </body>
