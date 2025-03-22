@@ -88,7 +88,7 @@
     };
 
     function getWeather() {
-      fetch("https://api.openweathermap.org/data/2.5/weather?q=Tokyo&appid=YOUR_API_KEY&units=metric")
+      fetch("https://api.openweathermap.org/data/2.5/weather?q=Beijin&appid=e2711cffcc0c85eedc53ee42c3b29aef&units=metric")
         .then(response => response.json())
         .then(data => {
           const condition = data.weather[0].main;
