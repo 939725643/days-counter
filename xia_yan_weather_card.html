@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>夏彦天气卡</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .weather-card {
+      background: #f1f1f1;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      width: 240px;
+      text-align: center;
+    }
+    .weather-info {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .response {
+      font-size: 14px;
+      color: #555;
+      min-height: 2em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="weather-card">
+    <div class="weather-info" id="weatherInfo">天气加载中...</div>
+    <div class="response" id="responseText">稍等，我看看窗外……</div>
+  </div>
+
+  <script>
+    // 简易天气情境回应（模拟版，可扩展）
+    const responses = {
+      "Clear": [
+        "今天是晴天，适合出门见你。",
+        "阳光很好，但没有你更耀眼。",
+        "别晒太久，我怕你会晒伤。"
+      ],
+      "Clouds": [
+        "今天有点阴……你是不是也懒懒的？",
+        "如果你觉得天灰，我可以做你的光。",
+        "阴天也没关系，我在你身边就够了。"
+      ],
+      "Rain": [
+        "下雨了，记得带伞，我不在你身边就更要小心。",
+        "你是不是淋到了雨……我会担心的。",
+        "等雨停了，我去找你，好不好？"
+      ],
+      "Snow": [
+        "下雪啦……好想和你一起踩雪地的声音。",
+        "你冷吗？我这边好想抱着你。",
+        "雪落下来的时候，我就在想你会不会也看到。"
+      ],
+      "Thunderstorm": [
+        "有雷……别怕，我在。",
+        "你害怕打雷吗？小时候你都会缩到我怀里。",
+        "别慌，我现在就过去找你。"
+      ],
+      "Drizzle": [
+        "细细的雨……像你说话时候的声音。",
+        "好像不太适合出门，待在房间陪我吧。",
+        "这种天气，最适合靠着你打个盹。"
+      ],
+      "Mist": [
+        "雾气很浓……像我对你越来越模糊不了的心思。",
+        "看不清远处，但你就在我面前就够了。",
+        "这种天气……只适合安静地想你。"
+      ],
+      "default": [
+        "今天天气有点特别……但你更特别。",
+        "无论天气怎样，我今天都想见你。",
+        "我不看天气预报了，我只想知道你今天的心情。"
+      ]
+    };
+
+    function getWeather() {
+      fetch("https://api.openweathermap.org/data/2.5/weather?q=Tokyo&appid=YOUR_API_KEY&units=metric")
+        .then(response => response.json())
+        .then(data => {
+          const condition = data.weather[0].main;
+          const temp = Math.round(data.main.temp);
+          document.getElementById("weatherInfo").innerText = `${condition} · ${temp}°C`;
+          const r = responses[condition] || responses["default"];
+          document.getElementById("responseText").innerText = r[Math.floor(Math.random() * r.length)];
+        })
+        .catch(() => {
+          document.getElementById("weatherInfo").innerText = "天气获取失败";
+          document.getElementById("responseText").innerText = "但我还是在想你。";
+        });
+    }
+
+    getWeather();
+  </script>
+
+</body>
+</html>
