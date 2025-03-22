@@ -1,68 +1,70 @@
+
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我們在一起的天數</title>
-    <style>
-        body {
-            font-family: "Comic Sans MS", Arial, sans-serif;
-            text-align: center;
-            background-color: #f9f9f9;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background: #f1f1f1; /* 淺黃色卡片 */
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 230px;
-        }
-        h2 {
-            color: #FF914D;
-            margin: 10px 0;
-        }
-        #daysTogether {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-            margin: 10px 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>我们重逢的天数</title>
+  <style>
+    body {
+      background: #f5f5f5;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #f1f1f1;
+      border-radius: 12px;
+      padding: 18px 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 220px;
+    }
+
+    .title {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 6px;
+    }
+
+    .days-line {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .days-number {
+      font-size: 30px;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .date {
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="title">我们重逢至今</div>
+    <div class="days-line"><span style="font-size: 13px;">一共</span> <span class="days-number" id="daysTogether">0</span> <span style="font-size: 13px;">天 </span></div>
+    <div class="date" id="currentDate">今天是：2025年03月22日</div>
+  </div>
 
-    <div class="container">
-        <h2>我们重逢至今</h2>
+  <script>
+    const startDate = new Date("2020-07-30");
+    const now = new Date();
+    const diff = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+    document.getElementById("daysTogether").textContent = diff;
 
-        <p class="text">一共 <span id="daysTogether" class="counter"></span> 天 <span class="heart">💛</span></p>
-        <p id="currentDate" style="font-size: 14px; color: #666; margin-top: 8px;"></p>
-    </div>
-
-    <script>
-        function calculateDays() {
-            var startDate = new Date("2020-07-30"); // 你們重逢的日期
-            var today = new Date();
-            var timeDiff = today - startDate;
-            var daysTogether = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            document.getElementById("daysTogether").innerText = daysTogether;
-        }
-
-        calculateDays();
-        
-        // 顯示當前日期
-        var dateElem = document.getElementById("currentDate");
-        var today = new Date();
-        var y = today.getFullYear();
-        var m = ("0" + (today.getMonth() + 1)).slice(-2);
-        var d = ("0" + today.getDate()).slice(-2);
-        dateElem.innerText = "今天是：" + y + "年" + m + "月" + d + "日";
-    </script>
-
+    const y = now.getFullYear();
+    const m = ("0" + (now.getMonth() + 1)).slice(-2);
+    const d = ("0" + now.getDate()).slice(-2);
+    document.getElementById("currentDate").textContent = "今天是：" + y + "年" + m + "月" + d + "日";
+  </script>
 </body>
 </html>
